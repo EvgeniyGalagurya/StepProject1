@@ -53,18 +53,4 @@ public class DaoFile<A extends IdentifableSerializable> implements DAO<A> {
         oos.writeObject(as);
         oos.close();
     }
-
-    @Override
-    public void loadAll() throws Exception {
-        FileInputStream fis = new FileInputStream(file);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-
-        ArrayList<Flight> as = (ArrayList<Flight>) ois.readObject();
-        ois.close();
-        for (Flight a : as) {
-            System.out.println(a);
-
-
-        }
-    }
 }

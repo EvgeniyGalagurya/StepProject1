@@ -6,8 +6,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
         ConsoleInterface menu = new ConsoleInterface();
         menu.Controller(menu.menu);
-        //cdmhjgtkmxdj;selkd,l
-//coment by Anatolii
 
     }
 }

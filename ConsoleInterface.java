@@ -43,16 +43,14 @@ public class ConsoleInterface {
                     break;
                 case 4:
                     System.out.println("Отменить бронирование.");
-                    System.out.println("На Ваше имя забронированы следующие рейсы:");
-                    App.myBook();
-                    Scanner scanner2 = new Scanner(System.in);
-                    System.out.print("Введите id рейса, который Вы хотите отменить: ");
-                    int d = scanner.nextInt();
-                    App.deleteFlights(d);
+                    App.deleteFlights();
                     break;
                 case 5:
-                    System.out.println("Мои рейсы:");
-                    App.myBook();
+//                    System.out.println("Мои рейсы:");
+                    Scanner scannername = new Scanner(System.in);
+                    System.out.print("Введите имя ");
+                    String name = scannername.nextLine();
+                    App.myBook(name);
                     break;
                 case 6:
                     System.out.println("Завершение работы приложения");

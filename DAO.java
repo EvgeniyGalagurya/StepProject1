@@ -11,8 +11,4 @@ public interface DAO<A extends Identifable> {
   default void delete(A a) throws Exception {
     delete(a.id());
   }
-
-  void  loadAll() throws Exception;
-
-//  A loadAll() throws Exception;
 }

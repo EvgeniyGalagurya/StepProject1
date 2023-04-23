@@ -3,6 +3,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 public class FlightGenerator implements IdentifableSerializable {
+    @Override
+    public int id() {
+        return 0;
+    }
+
     public enum Destination {KYIV, KHARKIV, LVIV, IVANO_FRANKIVSK, CHERNIGIV, DNIPR}
     private static final int maxFreePlaces = 50;
     private static final Random GenerateNumbers = new Random();

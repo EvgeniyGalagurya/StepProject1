@@ -12,7 +12,6 @@ public record Flight(int id, String from, String to, String date, String time, I
     static Flight flight5 = new Flight(5, "Kyiv", "Chernigiv", "18.04.23", "17:25", 7);
     static Flight flight6 = new Flight(6, "Kyiv", "Dnipr", "18.04.23", "18:15", 34);
 
-
     @Override
     public String toString() {
         return id + ". [" + from + "] - [" + to + "] [" + date + "] [" + time + "] freeplaces: [" + places + "]";
