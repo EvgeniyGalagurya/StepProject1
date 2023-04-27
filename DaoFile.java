@@ -2,6 +2,7 @@ package StepProject;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DaoFile<A extends IdentifableSerializable> implements DAO<A> {
 
@@ -52,5 +53,16 @@ public class DaoFile<A extends IdentifableSerializable> implements DAO<A> {
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(as);
         oos.close();
+    }
+    @Override
+    public A loadAll(String name) throws Exception {
+        FileInputStream fis = new FileInputStream(file);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        ArrayList<A> as = (ArrayList<A>)ois.readObject();
+        ois.close();
+        for (A a: as) {
+            System.out.println(a);
+        }
+        return null;
     }
 }

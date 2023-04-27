@@ -1,84 +1,55 @@
 package StepProject;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
+
+import static StepProject.FlightGenerator.mapFull;
 
 public class App {
 
-  private static int k;
+  public static void main(int quality) throws Exception {
+    FlightGenerator.generateFlights(quality);
+    }
 
-  public static void main() throws Exception {
-
-    DAO<Flight> dao1 = new DaoFile<>(new File("flights.txt"));
-    dao1.save(Flight.flight1);
-    dao1.save(Flight.flight2);
-    dao1.save(Flight.flight3);
-    dao1.save(Flight.flight4);
-    dao1.save(Flight.flight5);
-    dao1.save(Flight.flight6);
+  public static void flightInfo(int i) throws Exception {
+    System.out.println(mapFull.load(i));
   }
-
-  public static void flightInfo(int id) throws Exception {
-
-    DAO<Flight> dao1 = new DaoFile<>(new File("flights.txt"));
-    dao1.save(Flight.flight1);
-    dao1.save(Flight.flight2);
-    dao1.save(Flight.flight3);
-    dao1.save(Flight.flight4);
-    dao1.save(Flight.flight5);
-    dao1.save(Flight.flight6);
-    System.out.println(dao1.load(id));
-  }
-
-  public static void board() throws Exception {
-
-    DAO<Flight> mapFull = new DaoHashMap<>();
-    mapFull.save(Flight.flight1);
-    mapFull.save(Flight.flight2);
-    mapFull.save(Flight.flight3);
-    mapFull.save(Flight.flight4);
-    mapFull.save(Flight.flight5);
-    mapFull.save(Flight.flight6);
-    for (int i = 1; i < 7; i++) {
+  public static void board(int quality) throws Exception {
+    String date = DateTimeFormatter.ofPattern("dd.MM.yyyy").format(LocalDateTime.now());
+    DAO<FlightGenerator> file = new DaoFile<>(new File("flights" + "[" + date + "].bin"));
+    for (int i = 1; i < quality+1; i++) {
       System.out.println(mapFull.load(i).id() + "." + "[" + mapFull.load(i).from() + "] - [" + mapFull.load(i).to() + "]" + " [" + mapFull.load(i).time() + "]");
+      file.save(mapFull.load(i));
     }
   }
-
-  public static void findFlights() throws Exception {
-    DAO<Flight> mapFull = new DaoHashMap<>();
-    mapFull.save(Flight.flight1);
-    mapFull.save(Flight.flight2);
-    mapFull.save(Flight.flight3);
-    mapFull.save(Flight.flight4);
-    mapFull.save(Flight.flight5);
-    mapFull.save(Flight.flight6);
-
+  public static void findFlights(int quality) throws Exception {
 
     Scanner scanner = new Scanner(System.in);
     Scanner scanner1 = new Scanner(System.in);
     System.out.println("Введите место назначения рейса: ");
-    String place = scanner.nextLine();
+    Destination place = Destination.valueOf(scanner.nextLine());
     System.out.println("Введите количество билетов бронирования: ");
     Integer quantityPerson = scanner.nextInt();
 
-    for (int i = 1; i < 7; i++)
-      if (place.equals(mapFull.load(i).to()) && mapFull.load(i).places() > quantityPerson) {
+    for (int i = 1; i < quality; i++)
+      if (mapFull.load(i).freePlaces() >= quantityPerson && mapFull.load(i).to() == place) {
         System.out.println(mapFull.load(i));
+       } else if (mapFull.load(i).freePlaces() < quantityPerson && mapFull.load(i).to() == place){
+          System.out.println("Нет рейса удовлетворяющего Вашим условиям.");
+          break;
       }
     System.out.println("Введите id рейса для бронирования или нажмите 0 для возврата в основное меню");
     Integer id = scanner.nextInt();
-//    mapFull.load(id).places() = places
     if (id > 0)
       for (int j = 1; j < quantityPerson + 1; j++) {
         System.out.println("Введите имя для бронирования:");
         String name = scanner1.nextLine();
-        DAO<Flight> myFlights = new DaoFile<>(new File(name + ".bin"));
-
+        DAO<FlightGenerator> myFlights = new DaoFile<>(new File(name + ".bin"));
         myFlights.save(mapFull.load(id));
       }
-
   }
 
   public static void deleteFlights() throws Exception {
@@ -90,29 +61,15 @@ public class App {
     Scanner scanner2 = new Scanner(System.in);
     System.out.print("Введите id рейса, который Вы хотите отменить: ");
     int id = scanner2.nextInt();
-    FileInputStream fis = new FileInputStream(name + ".bin");
-    ObjectInputStream ois = new ObjectInputStream(fis);
-    ArrayList<Flight> as = (ArrayList<Flight>) ois.readObject();
-    ois.close();
-    as.removeIf(a -> a.id() == id);
-    FileOutputStream fos = new FileOutputStream(name + ".bin");
-    ObjectOutputStream oos = new ObjectOutputStream(fos);
-    oos.writeObject(as);
-    oos.close();;
+    DAO<FlightGenerator> file = new DaoFile<>(new File(name + ".bin"));
+    file.delete(id);
   }
 
-  //
   public static void myBook(String name) throws Exception {
-    FileInputStream fis = new FileInputStream(name + ".bin");
-    ObjectInputStream ois = new ObjectInputStream(fis);
-    ArrayList<Flight> as = (ArrayList<Flight>) ois.readObject();
-    ois.close();
-    for (Flight a : as) {
-      System.out.println(a);
-
-
-
-  }}}
+    DAO<FlightGenerator> file = new DaoFile<>(new File(name + ".bin"));
+    file.loadAll(name);
+  }
+}
 
 
 

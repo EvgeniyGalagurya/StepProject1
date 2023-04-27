@@ -1,5 +1,7 @@
 package StepProject;
 
+import java.util.HashMap;
+
 public interface DAO<A extends Identifable> {
 
   void save(A a) throws Exception;
@@ -11,4 +13,5 @@ public interface DAO<A extends Identifable> {
   default void delete(A a) throws Exception {
     delete(a.id());
   }
+  public A loadAll(String name) throws Exception;
 }

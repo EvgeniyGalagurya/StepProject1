@@ -22,4 +22,8 @@ public class DaoHashMap<A extends Identifable> implements DAO<A> {
     mapFull.remove(id);
   }
 
+  @Override
+  public A loadAll(String name) {
+    return (A) mapFull;
+  };
 }
